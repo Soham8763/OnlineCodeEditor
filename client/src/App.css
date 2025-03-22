@@ -1,0 +1,43 @@
+.playground-container{
+  display: flex;
+  flex-direction: column;
+}
+.editor-container{
+  display: flex;
+  min-height: 67vh;
+}
+li{
+  list-style: none;
+  line-height: 1vw;
+}
+.files{
+  padding: 1vw;
+}
+.files {
+  width: 67vh;
+  height: 68.38vh;
+  background-color: #1f2937;
+  color: #d1d5db;
+  overflow-y: auto;
+  border-right: 1px solid #374151;
+}
+
+.tree {
+  padding: 8px;
+}
+
+.tree-node {
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.tree-node:hover {
+  background-color: #2d2d2d;
+}
+
+.tree-node-selected {
+  background-color: #3b3b3b;
+  color: #60a5fa;
+}
