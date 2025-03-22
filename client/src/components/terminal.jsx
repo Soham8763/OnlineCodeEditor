@@ -6,8 +6,6 @@ const Terminal = () => {
     const terminalRef = useRef();
     const isRendered = useRef(null)
     useEffect(()=>{
-        // if(isRendered.current) return
-        // isRendered.current = true
         const term = new XTerminal({
             rows:20
         });
@@ -20,14 +18,12 @@ const Terminal = () => {
         }
         socket.on('terminal:data',onTerminalData)
         return () => {
-            term.dispose(); 
+            term.dispose();
             socket.off('terminal:data', onTerminalData);
         };
     },[])
   return (
-    <div ref={terminalRef}  id='terminal'>
-
-    </div>
+    <div ref={terminalRef}  id='terminal'></div>
   )
 }
 

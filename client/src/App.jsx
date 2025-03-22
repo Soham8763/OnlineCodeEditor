@@ -45,7 +45,7 @@ function App() {
           path: selectedFile,
           content: code
         })
-      }, 5000)
+      }, 500)
       return () => {
         clearTimeout(timer);
       }
@@ -88,7 +88,7 @@ function App() {
             style={{
               backgroundColor: "#1e1e1e",
               color: "#d4d4d4",
-              fontSize: "2vw",
+              fontSize: "2.5vw",
               height: "70vh",
               width: '90vw'
             }}

@@ -15,8 +15,6 @@ const io = new SocketServer(server, {
 });
 
 app.use(cors());
-
-// Ensure the 'user' directory exists
 const userDirectory = path.join(process.env.INIT_CWD || __dirname, 'user');
 fs.mkdir(userDirectory, { recursive: true });
 
@@ -27,8 +25,6 @@ const ptyProcess = pty.spawn('bash', [], {
     cwd: userDirectory,
     env: process.env
 });
-
-// Watch for file changes using chokidar
 chokidar.watch(userDirectory).on('all', (event, filePath) => {
     console.log(`File event: ${event} on ${filePath}`);
     io.emit('file:refresh', filePath);
@@ -40,11 +36,9 @@ ptyProcess.onData((data) => {
 
 io.on('connection', (socket) => {
     console.log('Socket connected:', socket.id);
-
-    // Handle file changes from the client
     socket.on('file:change', async ({ path: filePath, content }) => {
         try {
-            if (!filePath.startsWith('/')) filePath = '/' + filePath; // Ensure leading slash
+            if (!filePath.startsWith('/')) filePath = '/' + filePath;
             const fullPath = path.join(userDirectory, filePath);
             await fs.writeFile(fullPath, content);
             console.log(`File updated: ${fullPath}`);
@@ -53,8 +47,6 @@ io.on('connection', (socket) => {
             socket.emit('file:error', { error: 'Failed to write file' });
         }
     });
-
-    // Handle terminal input from the client
     socket.on('terminal:write', (data) => {
         try {
             ptyProcess.write(data);
@@ -63,8 +55,6 @@ io.on('connection', (socket) => {
         }
     });
 });
-
-// API to get file tree
 app.get('/files', async (req, res) => {
     try {
         const fileTree = await generateFileTree(userDirectory);
@@ -74,8 +64,6 @@ app.get('/files', async (req, res) => {
         res.status(500).json({ error: 'Failed to generate file tree' });
     }
 });
-
-// API to read file content
 app.get('/files/content', async (req, res) => {
     try {
         let filePath = req.query.path;
@@ -88,8 +76,6 @@ app.get('/files/content', async (req, res) => {
         res.status(500).json({ error: 'Failed to read file' });
     }
 });
-
-// Generate file tree function
 async function generateFileTree(directory) {
     const tree = {};
 
@@ -110,8 +96,6 @@ async function generateFileTree(directory) {
     await buildTree(directory, tree);
     return tree;
 }
-
-// Start server
 server.listen(port, () => {
     console.log(`🐳 Server is running on port ${port}`);
 });
